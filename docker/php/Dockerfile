@@ -1,5 +1,7 @@
 FROM php:7.4-fpm
-COPY php.ini /usr/local/etc/php/
+COPY ./docker/php/php.ini /usr/local/etc/php/
+COPY . /var/www
+
 
 RUN apt-get update \
   && apt-get install -y zlib1g-dev mariadb-client vim libzip-dev \
