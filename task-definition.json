@@ -1,0 +1,58 @@
+{
+    "containerDefinitions": [
+        {
+            "name": "nginx",
+            "image": "906332056165.dkr.ecr.ap-northeast-1.amazonaws.com/nginx:453ef4571d5fd25855f5608cbae6e36e241e2194",
+            "cpu": 0,
+            "links": [],
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/laravel-example",
+                    "awslogs-region": "ap-northeast-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        },
+        {
+            "name": "php",
+            "image": "906332056165.dkr.ecr.ap-northeast-1.amazonaws.com/php:453ef4571d5fd25855f5608cbae6e36e241e2194",
+            "cpu": 0,
+            "portMappings": [],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/laravel-example",
+                    "awslogs-region": "ap-northeast-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ],
+    "family": "laravel-example",
+    "taskRoleArn": "arn:aws:iam::906332056165:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::906332056165:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "volumes": [],
+    "placementConstraints": [],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512"
+}
