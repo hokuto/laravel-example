@@ -11,12 +11,17 @@ phases:
       - echo Building the Docker image...
       - IMAGE_TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}
       - NGINX_IMAGE_URI_TAG=$NGINX_IMAGE_REPO_NAME:$IMAGE_TAG
+      - PHP_IMAGE_URI_TAG=$PHP_IMAGE_REPO_NAME:$IMAGE_TAG
       - docker build --file docker/nginx/Dockerfile -t $NGINX_IMAGE_URI_TAG .
+      - docker build --file docker/php/Dockerfile -t $PHP_IMAGE_URI_TAG .
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push $NGINX_IMAGE_URI_TAG
-      - echo "[{\"name\":\"${CONTAINER_NAME}\",\"imageUri\":\"$NGINX_IMAGE_URI_TAG\"}]" > imagedefinitions.json
+      - docker push $PHP_IMAGE_URI_TAG
+      - NGINX_DEFS="{\"name\":\"${NGINX_CONTAINER_NAME}\",\"imageUri\":\"$NGINX_IMAGE_URI_TAG\"}"
+      - PHP_DEFS="{\"name\":\"${PHP_CONTAINER_NAME}\",\"imageUri\":\"$PHP_IMAGE_URI_TAG\"}"
+      - echo "[$NGINX_DEFS,$PHP_DEFS]" > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
